@@ -1,6 +1,13 @@
-export type Product = {
-  id: number | null;
+export type ProductCommand = {
+  id: string;
   name: string;
   price: number;
-  category?: string;
+  category: string;
+};
+
+export type ProductViewModel = {
+  id: string;
+  name: string;
+  price: number;
+  category: string;
 };

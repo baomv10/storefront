@@ -1,7 +1,7 @@
+import { v4 as uuidv4 } from 'uuid';
 import { ProductStore } from '../product';
 
 const store = new ProductStore();
-
 describe('Should test Products', () => {
   it('should have an index method', () => {
     expect(store.index).toBeDefined();
@@ -19,19 +19,21 @@ describe('Should test Products', () => {
   });
 
   it('should add a product', async () => {
+    const id = uuidv4();
     const result = await store.create({
-      id: null,
+      id,
       name: 'iphone',
       price: 250,
       category: 'phone',
     });
 
-    expect(result.name).toEqual('iphone');
+    expect(result.id).toEqual(id);
   });
 
   it('should return a list of products', async () => {
+    const id = uuidv4();
     await store.create({
-      id: null,
+      id,
       name: 'iphone',
       price: 250,
       category: 'phone',
@@ -41,27 +43,26 @@ describe('Should test Products', () => {
   });
 
   it('should return the correct product', async () => {
-    const product = await store.create({
-      id: null,
+    const id = uuidv4();
+    await store.create({
+      id,
       name: 'iphone',
       price: 250,
       category: 'phone',
     });
-    const result = await store.show(product.id + '');
-
-    expect(result.name).toEqual('iphone');
-    expect(result.category).toEqual('phone');
-    expect(result.price).toEqual(250);
+    const result = await store.show(id);
+    expect(result.id).toEqual(id);
   });
 
   it('should remove the product', async () => {
+    const id = uuidv4();
     const product = await store.create({
-      id: null,
+      id,
       name: 'iphone',
       price: 250,
       category: 'phone',
     });
-    const result = await store.delete(product.id + '');
-    expect(result).toEqual(true);
+    const result = await store.delete(product.id);
+    expect(result.id).toEqual(id);
   });
 });

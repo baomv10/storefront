@@ -8,7 +8,8 @@
     "start": "nodemon src/index.ts",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --config .prettierrc src/**/*.ts --write",
-    "test": "SET ENV=test && npx tsc && db-migrate --env test up && jasmine && db-migrate --env test reset"
+    "test": "SET ENV=test && npx tsc && db-migrate --env test up && jasmine && db-migrate --env test reset",
+    "watch": "tsc-watch --esModuleInterop src/index.ts --outDir ./dist --onSuccess \"node ./dist/index.js\""
   },
   "author": "BaoMV",
   "license": "ISC",
@@ -19,7 +20,8 @@
     "db-migrate-pg": "^1.5.2",
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
-    "pg": "^8.11.3"
+    "pg": "^8.11.3",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -29,6 +31,7 @@
     "@types/node": "^20.11.16",
     "@types/pg": "^8.11.2",
     "@types/supertest": "^6.0.2",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.0.2",
     "@typescript-eslint/parser": "^7.0.2",
     "eslint": "^8.56.0",
@@ -41,6 +44,7 @@
     "prettier": "^3.2.5",
     "supertest": "^6.3.4",
     "ts-node": "^10.9.2",
+    "tsc-watch": "^6.0.4",
     "typescript": "^5.3.3"
   }
 }

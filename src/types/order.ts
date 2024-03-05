@@ -1,8 +1,30 @@
-export type Order = {
-  id: number | null;
+export type OrderCommand = {
+  id: string;
   status: string;
+  user_id: string;
+  order_details: Array<OrderDetailCommand>;
+};
+
+export type OrderViewModel = {
+  id: string;
+  status: string;
+  user_id: number;
+  first_name: string;
+  last_name: string;
+  username: string;
+  order_details: Array<OrderDetailViewModel>;
+};
+
+export type OrderDetailCommand = {
+  id: string;
+  product_id: string;
   quantity: number;
-  user_id: number | null;
-  product_id: number | null;
-  product_name?: string;
+};
+
+export type OrderDetailViewModel = {
+  id: string;
+  product_id: number;
+  product_name: string;
+  quantity: string;
+  order_id: string;
 };

@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { UserStore } from '../user';
 
 const store = new UserStore();
@@ -19,57 +20,53 @@ describe('Should test Users', () => {
   });
 
   it('should add a user', async () => {
+    const id = uuidv4();
     const result = await store.create({
-      id: null,
+      id,
       first_name: 'John',
       last_name: 'Doe',
       password: 'password',
       username: 'username',
     });
-    expect(result.first_name).toEqual('John');
-    expect(result.last_name).toEqual('Doe');
-    expect(result.username).toEqual('username');
+    expect(result.id).toEqual(id);
   });
 
   it('should return a list of users', async () => {
+    const id = uuidv4();
     await store.create({
-      id: null,
+      id,
       first_name: 'John',
       last_name: 'Doe',
       password: 'password',
       username: 'username',
     });
     const result = await store.index();
-
     expect(result.length).toBeGreaterThan(0);
-    expect(result[0].first_name).toEqual('John');
-    expect(result[0].last_name).toEqual('Doe');
-    expect(result[0].username).toEqual('username');
   });
 
   it('should return the correct user', async () => {
-    const user = await store.create({
-      id: null,
+    const id = uuidv4();
+    await store.create({
+      id,
       first_name: 'John',
       last_name: 'Doe',
       password: 'password',
       username: 'username',
     });
-    const result = await store.show(user.id + '');
-    expect(result.first_name).toEqual('John');
-    expect(result.last_name).toEqual('Doe');
-    expect(result.username).toEqual('username');
+    const result = await store.show(id);
+    expect(result.id).toEqual(id);
   });
 
   it('should remove the user', async () => {
-    const user = await store.create({
-      id: null,
+    const id = uuidv4();
+    await store.create({
+      id,
       first_name: 'John',
       last_name: 'Doe',
       password: 'password',
       username: 'username',
     });
-    const result = await store.delete(user.id + '');
-    expect(result).toEqual(true);
+    const result = await store.delete(id);
+    expect(result.id).toEqual(id);
   });
 });

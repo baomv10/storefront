@@ -55,10 +55,10 @@
     - User
         ```
             - GET	    /users          Get all users
-            - GET	    /users/:id      Get a user by Id
-            - POST	    /users          Create a new user
-            - POST	    /users/login    Authenticate user
-            - DELETE	/users/:id      Delete a user by Id
+            - GET       /users/:id      Get a user by Id
+            - POST      /users          Create a new user
+            - POST      /users/login    Authenticate user
+            - DELETE    /users/:id      Delete a user by Id
         ```
 
 
@@ -69,7 +69,7 @@
             - GET	    /products/topFivePopular            Get top 5 most popular products
             - GET	    /products/getByCategory/:name       Get products by category name
             - POST	    /products                           Create a new product
-            - DELETE	/products/:id                       Delete a product by Id
+            - DELETE    /products/:id                       Delete a product by Id
         ```
 
     - Orders

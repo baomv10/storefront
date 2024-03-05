@@ -8,7 +8,11 @@ const verifyAuthToken = (req: Request, res: Response, next: NextFunction) => {
     jwt.verify(token, process.env.TOKEN_SECRET as string);
     next();
   } catch (error) {
-    res.status(401).json('Unauthorized');
+    res.status(401).json({
+      success: false,
+      data: null,
+      error: 'Unauthorized',
+    });
   }
 };
 

@@ -1,27 +1,27 @@
 import supertest from 'supertest';
 import app from '../../index';
-import { User } from '../../types/user';
-import { Product } from '../../types/product';
+import { ProductViewModel } from '../../types/product';
+import { UserViewModel } from '../../types/user';
 
 const request = supertest(app);
 describe('Test Orders api responses', () => {
   let token: string;
-  let user: User;
-  let product: Product;
+  let user: UserViewModel;
+  let product: ProductViewModel;
   beforeAll(async () => {
     const payload = {
-      id: null,
       first_name: 'John',
       last_name: 'Doe',
       password: 'password',
       username: 'username',
     };
-    const { body } = await request.post('/users').send(payload);
-    token = body.token;
-    user = body.userInfo;
+    const {
+      body: { data },
+    } = await request.post('/users').send(payload);
+    token = data.token;
+    user = data.userInfo;
 
     const phone = {
-      id: null,
       name: 'iphone',
       price: 123,
       category: 'phone',
@@ -30,26 +30,28 @@ describe('Test Orders api responses', () => {
       .post('/products')
       .send(phone)
       .set('Authorization', `Bearer ${token}`);
-    product = response.body;
+    product = response.body.data;
   });
   describe('Should create method', () => {
     it('it should create order successfully', async () => {
       const payload = {
-        id: null,
         user_id: user.id,
-        product_id: product.id,
-        quantity: 23,
         status: 'Active',
+        order_details: [
+          {
+            product_id: product.id,
+            quantity: 1,
+          },
+        ],
       };
       const response = await request
         .post('/orders')
         .send(payload)
         .set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(200);
-      expect(response.body.user_id).toBe(user.id);
-      expect(response.body.product_id).toBe(product.id);
+      expect(response.body.data).toBe(true);
     });
-    it('it should create product failed', async () => {
+    it('it should create order failed', async () => {
       const payload = {};
       const response = await request.post('/orders').send(payload);
       expect(response.status).toBe(401);
@@ -59,11 +61,14 @@ describe('Test Orders api responses', () => {
   describe('Should get Order By User method', () => {
     beforeAll(async () => {
       const payload = {
-        id: null,
         user_id: user.id,
-        product_id: product.id,
-        quantity: 23,
         status: 'Active',
+        order_details: [
+          {
+            product_id: product.id,
+            quantity: 1,
+          },
+        ],
       };
       await request
         .post('/orders')
@@ -75,24 +80,27 @@ describe('Test Orders api responses', () => {
         .get(`/orders/${user.id}`)
         .set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(200);
-      expect(response.body.length).toBeGreaterThan(0);
+      expect(response.body.data.length).toBeGreaterThan(0);
     });
     it('it should Order By User failed', async () => {
       const response = await request
         .get('/orders/1231')
         .set('Authorization', `Bearer ${token}`);
-      expect(response.body.length).toBe(0);
+      expect(response.body.data.length).toBe(0);
     });
   });
 
   describe('Should complete Order By User method', () => {
     beforeAll(async () => {
       const payload = {
-        id: null,
         user_id: user.id,
-        product_id: product.id,
-        quantity: 23,
         status: 'Active',
+        order_details: [
+          {
+            product_id: product.id,
+            quantity: 1,
+          },
+        ],
       };
       await request
         .post('/orders')
@@ -104,7 +112,7 @@ describe('Test Orders api responses', () => {
         .patch(`/orders/updateStatus/${user.id}`)
         .set('Authorization', `Bearer ${token}`);
       expect(response.status).toBe(200);
-      expect(response.body).toBe('success');
+      expect(response.body.data).toBe(true);
     });
     it('it should complete Order By User failed', async () => {
       const response = await request

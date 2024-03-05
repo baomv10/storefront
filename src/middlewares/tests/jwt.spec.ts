@@ -22,7 +22,7 @@ describe('Test jwt responses', () => {
     const res = {} as Response;
 
     let status = 0;
-    let response = '';
+    let response = { error: '' };
 
     res.status = (data) => {
       status = data;
@@ -35,6 +35,6 @@ describe('Test jwt responses', () => {
     const next = () => {};
     await verifyAuthToken(req, res, next);
     expect(status).toEqual(401);
-    expect(response).toEqual('Unauthorized');
+    expect(response.error).toEqual('Unauthorized');
   });
 });

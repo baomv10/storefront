@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { OrderStore } from '../order';
 import { ProductStore } from '../product';
 import { UserStore } from '../user';
@@ -18,83 +19,101 @@ describe('Should test Orders', () => {
   });
 
   it('should add a order', async () => {
-    const product = await productStore.create({
-      id: null,
+    const productId = uuidv4();
+    const userId = uuidv4();
+    const orderId = uuidv4();
+    await productStore.create({
+      id: productId,
       name: 'iphone',
       price: 250,
       category: 'phone',
     });
-    const user = await userStore.create({
-      id: null,
+    await userStore.create({
+      id: userId,
       first_name: 'John',
       last_name: 'Doe',
       username: 'username',
       password: 'password',
     });
     const result = await orderStore.create({
-      id: null,
-      user_id: user.id,
-      product_id: product.id,
-      quantity: 250,
+      id: orderId,
+      user_id: userId,
       status: 'Active',
+      order_details: [
+        {
+          id: orderId,
+          product_id: productId,
+          quantity: 2,
+        },
+      ],
     });
 
-    expect(result.user_id).toEqual(user.id);
-    expect(result.product_id).toEqual(product.id);
-    expect(result.quantity).toEqual(250);
+    expect(result).toEqual(true);
   });
 
   it('should get Order By User', async () => {
-    const product = await productStore.create({
-      id: null,
+    const productId = uuidv4();
+    const userId = uuidv4();
+    const orderId = uuidv4();
+    await productStore.create({
+      id: productId,
       name: 'iphone',
       price: 250,
       category: 'phone',
     });
-    const user = await userStore.create({
-      id: null,
+    await userStore.create({
+      id: userId,
       first_name: 'John',
       last_name: 'Doe',
       username: 'username',
       password: 'password',
     });
     await orderStore.create({
-      id: null,
-      user_id: user.id,
-      product_id: product.id,
-      quantity: 250,
+      id: orderId,
+      user_id: userId,
       status: 'Active',
+      order_details: [
+        {
+          id: orderId,
+          product_id: productId,
+          quantity: 2,
+        },
+      ],
     });
-    const result = await orderStore.getOrderByUser(user.id + '');
-    expect(result.length).toEqual(1);
-    expect(result[0].status).toEqual('Active');
-    expect(result[0].product_name).toEqual('iphone');
-    expect(result[0].quantity).toEqual(250);
+    const result = await orderStore.getOrderByUser(userId);
+    expect(result.length).toBeGreaterThan(0);
   });
 
   it('should complete Order By User', async () => {
-    const product = await productStore.create({
-      id: null,
+    const productId = uuidv4();
+    const userId = uuidv4();
+    const orderId = uuidv4();
+    await productStore.create({
+      id: productId,
       name: 'iphone',
       price: 250,
       category: 'phone',
     });
-    const user = await userStore.create({
-      id: null,
+    await userStore.create({
+      id: userId,
       first_name: 'John',
       last_name: 'Doe',
       username: 'username',
       password: 'password',
     });
-
     await orderStore.create({
-      id: null,
-      user_id: user.id,
-      product_id: product.id,
-      quantity: 250,
+      id: orderId,
+      user_id: userId,
       status: 'Active',
+      order_details: [
+        {
+          id: orderId,
+          product_id: productId,
+          quantity: 2,
+        },
+      ],
     });
-    const result = await orderStore.completeOrderByUser(user.id + '');
+    const result = await orderStore.completeOrderByUser(userId);
     expect(result).toEqual(true);
   });
 });

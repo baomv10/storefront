@@ -2,10 +2,10 @@
 
 // @ts-ignore
 import Client from '../database';
-import { Product } from '../types/product';
+import { ProductCommand, ProductViewModel } from '../types/product';
 
 export class ProductStore {
-  async index(): Promise<Array<Product>> {
+  async index(): Promise<Array<ProductViewModel>> {
     try {
       // @ts-ignore
       const conn = await Client.connect();
@@ -14,62 +14,62 @@ export class ProductStore {
       conn.release();
       return result.rows;
     } catch (err) {
-      throw new Error(`Could not get products. Error: ${err}`);
+      throw new Error(`Could not get products. ${err}`);
     }
   }
 
-  async show(id: string): Promise<Product> {
+  async show(id: string): Promise<ProductViewModel> {
     try {
       // @ts-ignore
       const conn = await Client.connect();
-      const sql = 'SELECT * FROM products WHERE id = ($1)';
+      const sql =
+        'SELECT id, name, price, category FROM products WHERE id = ($1)';
       const result = await conn.query(sql, [id]);
       conn.release();
       return result.rows[0];
     } catch (err) {
-      throw new Error(`Could not find book ${id}. Error: ${err}`);
+      throw new Error(`Could not find product ${id}. ${err}`);
     }
   }
 
-  async create(product: Product): Promise<Product> {
+  async create(product: ProductCommand): Promise<ProductViewModel> {
     try {
       const sql =
-        'INSERT INTO products (name, price, category) VALUES($1, $2, $3) RETURNING *';
+        'INSERT INTO products (id, name, price, category) VALUES($1, $2, $3, $4) RETURNING id, name, price, category';
       // @ts-ignore
       const conn = await Client.connect();
       const result = await conn.query(sql, [
+        product.id,
         product.name,
         product.price,
         product.category,
       ]);
-      const p = result.rows[0];
       conn.release();
-      return p;
+      return result.rows[0];
     } catch (err) {
-      throw new Error(
-        `Could not add new product ${product.name}. Error: ${err}`,
-      );
+      throw new Error(`Could not add new product ${product.name}. ${err}`);
     }
   }
 
-  async delete(id: string): Promise<boolean> {
+  async delete(id: string): Promise<ProductViewModel> {
     try {
-      const sql = 'DELETE FROM products WHERE id=($1)';
+      const sql =
+        'DELETE FROM products WHERE id=($1) RETURNING id, name, price, category';
       // @ts-ignore
       const conn = await Client.connect();
       const result = await conn.query(sql, [id]);
       conn.release();
-      return result.rowCount > 0;
+      return result.rows[0];
     } catch (err) {
-      throw new Error(`Could not delete product ${id}. Error: ${err}`);
+      throw new Error(`Could not delete product ${id}. ${err}`);
     }
   }
 
-  async topFivePopular(): Promise<Array<Product>> {
+  async topFivePopular(): Promise<Array<ProductViewModel>> {
     try {
       //@ts-ignore
       const conn = await Client.connect();
-      const sql = 'SELECT * FROM products LIMIT 5';
+      const sql = 'SELECT id, name, price, category FROM products LIMIT 5';
       const result = await conn.query(sql);
       conn.release();
       return result.rows;
@@ -78,11 +78,14 @@ export class ProductStore {
     }
   }
 
-  async getProductByCategory(category: string): Promise<Array<Product>> {
+  async getProductByCategory(
+    category: string,
+  ): Promise<Array<ProductViewModel>> {
     try {
       //@ts-ignore
       const conn = await Client.connect();
-      const sql = 'SELECT * FROM products WHERE category = ($1)';
+      const sql =
+        'SELECT id, name, price, category FROM products WHERE category = ($1)';
       const result = await conn.query(sql, [category]);
       conn.release();
       return result.rows;
