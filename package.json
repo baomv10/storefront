@@ -8,7 +8,7 @@
     "start": "nodemon src/index.ts",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --config .prettierrc src/**/*.ts --write",
-    "test": "SET ENV=test&& npx tsc && db-migrate --env test up && jasmine && db-migrate --env test reset",
+    "test": "SET ENV=test && npx tsc && db-migrate --env test up && jasmine && db-migrate --env test reset",
     "watch": "tsc-watch --esModuleInterop src/index.ts --outDir ./dist --onSuccess \"node ./dist/index.js\""
   },
   "author": "BaoMV",
