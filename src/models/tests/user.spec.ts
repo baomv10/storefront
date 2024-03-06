@@ -23,10 +23,9 @@ describe('Should test Users', () => {
     const id = uuidv4();
     const result = await store.create({
       id,
-      first_name: 'John',
-      last_name: 'Doe',
+      firstName: 'John',
+      lastName: 'Doe',
       password: 'password',
-      username: 'username',
     });
     expect(result.id).toEqual(id);
   });
@@ -35,10 +34,9 @@ describe('Should test Users', () => {
     const id = uuidv4();
     await store.create({
       id,
-      first_name: 'John',
-      last_name: 'Doe',
+      firstName: 'John',
+      lastName: 'Doe',
       password: 'password',
-      username: 'username',
     });
     const result = await store.index();
     expect(result.length).toBeGreaterThan(0);
@@ -48,10 +46,9 @@ describe('Should test Users', () => {
     const id = uuidv4();
     await store.create({
       id,
-      first_name: 'John',
-      last_name: 'Doe',
+      firstName: 'John',
+      lastName: 'Doe',
       password: 'password',
-      username: 'username',
     });
     const result = await store.show(id);
     expect(result.id).toEqual(id);
@@ -61,10 +58,9 @@ describe('Should test Users', () => {
     const id = uuidv4();
     await store.create({
       id,
-      first_name: 'John',
-      last_name: 'Doe',
+      firstName: 'John',
+      lastName: 'Doe',
       password: 'password',
-      username: 'username',
     });
     const result = await store.delete(id);
     expect(result.id).toEqual(id);

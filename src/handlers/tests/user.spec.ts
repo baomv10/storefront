@@ -7,10 +7,9 @@ describe('Test User api responses', () => {
   describe('Should test create method', () => {
     it('it should create user successfully', async () => {
       const payload = {
-        first_name: 'John',
-        last_name: 'Doe',
+        firstName: 'John',
+        lastName: 'Doe',
         password: 'password',
-        username: 'username',
       };
       const response = await request.post('/users').send(payload);
       expect(response.status).toBe(200);
@@ -25,10 +24,9 @@ describe('Test User api responses', () => {
   describe('Should test get all method', () => {
     it('it should get all successfully', async () => {
       const payload = {
-        first_name: 'John',
-        last_name: 'Doe',
+        firstName: 'John',
+        lastName: 'Doe',
         password: 'password',
-        username: 'username',
       };
       const {
         body: {
@@ -51,10 +49,9 @@ describe('Test User api responses', () => {
     let userInfo: UserViewModel;
     beforeAll(async () => {
       const payload = {
-        first_name: 'John',
-        last_name: 'Doe',
+        firstName: 'John',
+        lastName: 'Doe',
         password: 'password',
-        username: 'username',
       };
       const {
         body: { data },
@@ -84,10 +81,9 @@ describe('Test User api responses', () => {
     let userInfo: UserViewModel;
     beforeAll(async () => {
       const payload = {
-        first_name: 'John',
-        last_name: 'Doe',
+        firstName: 'John',
+        lastName: 'Doe',
         password: 'password',
-        username: 'username',
       };
       const {
         body: { data },
@@ -109,31 +105,6 @@ describe('Test User api responses', () => {
         .set('Authorization', `Bearer ${token}`);
       expect(response.body.error).toBe('Not Found');
       expect(response.status).toBe(404);
-    });
-  });
-
-  describe('Should test authenticate method', () => {
-    beforeAll(async () => {
-      const payload = {
-        first_name: 'John',
-        last_name: 'Doe',
-        password: 'password',
-        username: 'username',
-      };
-      await request.post('/users').send(payload);
-    });
-
-    it('it should authenticate successfully', async () => {
-      const response = await request
-        .post(`/users/login`)
-        .send({ username: 'username', password: 'password' });
-      expect(response.status).toBe(200);
-    });
-    it('it should authenticate all failed', async () => {
-      const response = await request
-        .post(`/users/login`)
-        .send({ username: 'username1', password: 'password1' });
-      expect(response.status).toBe(401);
     });
   });
 });

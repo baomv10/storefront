@@ -6,10 +6,9 @@ describe('Test Product api responses', () => {
   let token: string;
   beforeAll(async () => {
     const payload = {
-      first_name: 'John',
-      last_name: 'Doe',
+      firstName: 'John',
+      lastName: 'Doe',
       password: 'password',
-      username: 'username',
     };
     const {
       body: { data },

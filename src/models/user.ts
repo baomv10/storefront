@@ -9,7 +9,7 @@ export class UserStore {
     try {
       // @ts-ignore
       const conn = await Client.connect();
-      const sql = 'SELECT id, first_name, last_name, username FROM users';
+      const sql = 'SELECT id, firstName, lastName FROM users';
       const result = await conn.query(sql);
       conn.release();
       return result.rows;
@@ -23,7 +23,7 @@ export class UserStore {
       // @ts-ignore
       const conn = await Client.connect();
       const sql =
-        'SELECT id, first_name, last_name, username FROM users WHERE id = ($1)';
+        'SELECT id, firstName, lastName FROM users WHERE id = ($1)';
       const result = await conn.query(sql, [id]);
       conn.release();
       return result.rows[0];
@@ -38,13 +38,12 @@ export class UserStore {
       // @ts-ignore
       const conn = await Client.connect();
       const sql =
-        'INSERT INTO users (id, first_name, last_name, username, password) VALUES($1, $2, $3, $4, $5) RETURNING id, first_name, last_name, username';
+        'INSERT INTO users (id, firstName, lastName, password) VALUES($1, $2, $3, $4) RETURNING id, firstName, lastName';
       const hash = bcrypt.hashSync(u.password, parseInt(saltRounds));
       const result = await conn.query(sql, [
         u.id,
-        u.first_name,
-        u.last_name,
-        u.username,
+        u.firstName,
+        u.lastName,
         hash,
       ]);
       conn.release();
@@ -57,7 +56,7 @@ export class UserStore {
   async delete(id: string): Promise<UserViewModel> {
     try {
       const sql =
-        'DELETE FROM users WHERE id=($1) RETURNING id, first_name, last_name, username';
+        'DELETE FROM users WHERE id=($1) RETURNING id, firstName, lastName';
       // @ts-ignore
       const conn = await Client.connect();
       const result = await conn.query(sql, [id]);
@@ -65,28 +64,6 @@ export class UserStore {
       return result.rows[0];
     } catch (err) {
       throw new Error(`Could not delete user ${id}. ${err}`);
-    }
-  }
-
-  async authenticate(
-    username: string,
-    password: string,
-  ): Promise<UserViewModel | null> {
-    try {
-      const sql =
-        'SELECT id, first_name, last_name, username, password FROM users WHERE username=($1)';
-      // @ts-ignore
-      const conn = await Client.connect();
-      const result = await conn.query(sql, [username]);
-      if (result.rows.length) {
-        const { password: pwd, ...user } = result.rows[0];
-        if (bcrypt.compareSync(password, pwd)) {
-          return user;
-        }
-      }
-      return null;
-    } catch (err) {
-      throw new Error(`Could not login. ${err}`);
     }
   }
 }

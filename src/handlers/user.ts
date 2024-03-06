@@ -85,13 +85,12 @@ const remove = async (req: Request, res: Response) => {
 };
 
 const create = async (req: Request, res: Response) => {
-  const { id = uuidv4(), first_name, last_name, username, password } = req.body;
+  const { id = uuidv4(), firstName, lastName, password } = req.body;
   try {
     const newUser = await store.create({
       id,
-      first_name,
-      last_name,
-      username,
+      firstName,
+      lastName,
       password,
     });
     const token = jwt.sign(
@@ -115,42 +114,12 @@ const create = async (req: Request, res: Response) => {
   }
 };
 
-const authenticate = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
-  try {
-    const user = await store.authenticate(username, password);
-    if (user) {
-      const token = jwt.sign({ user }, process.env.TOKEN_SECRET as string);
-      res.status(200).json({
-        success: true,
-        data: { token, userInfo: user },
-        error: null,
-      });
-    } else {
-      res.status(401).json({
-        success: false,
-        data: null,
-        error: 'invalid username or password',
-      });
-    }
-  } catch (err) {
-    res.status(500);
-    if (err instanceof Error) {
-      res.json({
-        success: false,
-        data: null,
-        error: err.message,
-      });
-    }
-  }
-};
 
 const userRoutes = (app: express.Application) => {
   app.post('/users', create);
   app.get('/users', verifyAuthToken, index);
   app.get('/users/:id', verifyAuthToken, show);
   app.delete('/users/:id', verifyAuthToken, remove);
-  app.post('/users/login', authenticate);
 };
 
 export default userRoutes;

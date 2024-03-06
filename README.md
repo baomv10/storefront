@@ -49,6 +49,8 @@
 
  - Start project using command: `npm start`
 
+ - Access the application with port 3000: `http://localhost:3000`
+
  - Run unit test using command: `npm test`
 
  - Some endpoints in the project:
@@ -57,7 +59,6 @@
             - GET	    /users          Get all users
             - GET       /users/:id      Get a user by Id
             - POST      /users          Create a new user
-            - POST      /users/login    Authenticate user
             - DELETE    /users/:id      Delete a user by Id
         ```
 

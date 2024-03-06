@@ -10,10 +10,9 @@ describe('Test Orders api responses', () => {
   let product: ProductViewModel;
   beforeAll(async () => {
     const payload = {
-      first_name: 'John',
-      last_name: 'Doe',
+      firstName: 'John',
+      lastName: 'Doe',
       password: 'password',
-      username: 'username',
     };
     const {
       body: { data },

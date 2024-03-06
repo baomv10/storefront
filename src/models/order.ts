@@ -11,13 +11,13 @@ export class OrderStore {
       // @ts-ignore
       const conn = await Client.connect();
 
-      const result = await conn.query(sql, [
+      await conn.query(sql, [
         order.id,
         order.user_id,
         order.status,
       ]);
 
-      if (result.rowCount > 0 && order.order_details?.length > 0) {
+      if (order.order_details?.length > 0) {
         const order_detail = order.order_details.map((detail) => ({
           id: detail.id,
           product_id: detail.product_id,
@@ -29,13 +29,13 @@ export class OrderStore {
                         SELECT id, product_id, quantity, order_id 
                         FROM jsonb_to_recordset($1::jsonb) AS t (id text, product_id text, quantity int, order_id text)`;
 
-        const q = await conn.query(query, [JSON.stringify(order_detail)]);
+        await conn.query(query, [JSON.stringify(order_detail)]);
         conn.release();
-        return q.rowCount > 0;
+        return true;
       }
 
       conn.release();
-      return result.rowCount > 0;
+      return true;
     } catch (err) {
       throw new Error(`Could not add new order. ${err}`);
     }
@@ -46,7 +46,7 @@ export class OrderStore {
       // @ts-ignore
       const conn = await Client.connect();
 
-      const sql = `SELECT o.id, o.status, u.first_name, u.last_name, o.user_id, u.username,
+      const sql = `SELECT o.id, o.status, u.firstName, u.lastName, o.user_id,
                         (SELECT array_to_json(array_agg((items)))
                             FROM (
                             SELECT
@@ -59,7 +59,7 @@ export class OrderStore {
                         ) as order_details
                     FROM orders o INNER JOIN users u ON u.id = o.user_id
                     WHERE o.user_id = ($1)
-                    GROUP BY o.id, o.status, u.first_name, u.last_name, o.user_id, u.username`;
+                    GROUP BY o.id, o.status, u.firstName, u.lastName, o.user_id`;
 
       const orders = await conn.query(sql, [userId]);
 

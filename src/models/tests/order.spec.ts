@@ -30,9 +30,8 @@ describe('Should test Orders', () => {
     });
     await userStore.create({
       id: userId,
-      first_name: 'John',
-      last_name: 'Doe',
-      username: 'username',
+      firstName: 'John',
+      lastName: 'Doe',
       password: 'password',
     });
     const result = await orderStore.create({
@@ -63,9 +62,8 @@ describe('Should test Orders', () => {
     });
     await userStore.create({
       id: userId,
-      first_name: 'John',
-      last_name: 'Doe',
-      username: 'username',
+      firstName: 'John',
+      lastName: 'Doe',
       password: 'password',
     });
     await orderStore.create({
@@ -96,9 +94,8 @@ describe('Should test Orders', () => {
     });
     await userStore.create({
       id: userId,
-      first_name: 'John',
-      last_name: 'Doe',
-      username: 'username',
+      firstName: 'John',
+      lastName: 'Doe',
       password: 'password',
     });
     await orderStore.create({

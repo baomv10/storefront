@@ -9,9 +9,8 @@ export type OrderViewModel = {
   id: string;
   status: string;
   user_id: number;
-  first_name: string;
-  last_name: string;
-  username: string;
+  firstName: string;
+  lastName: string;
   order_details: Array<OrderDetailViewModel>;
 };
 
