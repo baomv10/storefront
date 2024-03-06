@@ -46,21 +46,9 @@ export class OrderStore {
       // @ts-ignore
       const conn = await Client.connect();
 
-      const sql = `SELECT o.id, o.status, u.firstName, u.lastName, o.user_id,
-                        (SELECT array_to_json(array_agg((items)))
-                            FROM (
-                            SELECT
-                            i.id, i.product_id, p.name as product_name, i.quantity, i.order_id
-                            FROM
-                                order_details i JOIN products p ON p.id = i.product_id
-                            WHERE
-                                i.order_id = o.id
-                            ) AS items
-                        ) as order_details
-                    FROM orders o INNER JOIN users u ON u.id = o.user_id
-                    WHERE o.user_id = ($1)
-                    GROUP BY o.id, o.status, u.firstName, u.lastName, o.user_id`;
-
+      const sql = `SELECT o.id, od.product_id, od.quantity, o.user_id, o.status
+                    FROM orders o JOIN order_details od ON o.id = od.order_id
+                    WHERE o.user_id = ($1)`;
       const orders = await conn.query(sql, [userId]);
 
       conn.release();
@@ -75,12 +63,12 @@ export class OrderStore {
     try {
       // @ts-ignore
       const conn = await Client.connect();
-      const sql = `update orders set status = $1 where user_id = ($2)`;
-      const orders = await conn.query(sql, ['Completed', userId]);
+      const sql = `update orders set status = $1 where user_id = ($2) RETURNING *`;
+      const order = await conn.query(sql, ['Completed', userId]);
       conn.release();
-      return orders.rowCount > 0;
+      return order?.rows?.length > 0;
     } catch (err) {
-      throw new Error(`Could not get orders. Error: ${err}`);
+      throw new Error(`Could not get orders. ${err}`);
     }
   }
 }

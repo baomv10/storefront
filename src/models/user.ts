@@ -9,7 +9,7 @@ export class UserStore {
     try {
       // @ts-ignore
       const conn = await Client.connect();
-      const sql = 'SELECT id, firstName, lastName FROM users';
+      const sql = 'SELECT id, firstName, lastName, password FROM users';
       const result = await conn.query(sql);
       conn.release();
       return result.rows;
@@ -23,7 +23,7 @@ export class UserStore {
       // @ts-ignore
       const conn = await Client.connect();
       const sql =
-        'SELECT id, firstName, lastName FROM users WHERE id = ($1)';
+        'SELECT id, firstName, lastName, password FROM users WHERE id = ($1)';
       const result = await conn.query(sql, [id]);
       conn.release();
       return result.rows[0];
@@ -38,7 +38,7 @@ export class UserStore {
       // @ts-ignore
       const conn = await Client.connect();
       const sql =
-        'INSERT INTO users (id, firstName, lastName, password) VALUES($1, $2, $3, $4) RETURNING id, firstName, lastName';
+        'INSERT INTO users (id, firstName, lastName, password) VALUES($1, $2, $3, $4) RETURNING id, firstName, lastName, password';
       const hash = bcrypt.hashSync(u.password, parseInt(saltRounds));
       const result = await conn.query(sql, [
         u.id,

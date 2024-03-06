@@ -14,6 +14,8 @@
 
     - Create username/password to access database: `postgres/admin123`
 
+    - Connect to PostgreSQL with port: `5432`
+
  - Here is a example of .env file:
     ```
         POSTGRES_HOST=127.0.0.1
