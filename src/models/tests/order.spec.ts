@@ -36,12 +36,12 @@ describe('Should test Orders', () => {
     });
     const result = await orderStore.create({
       id: orderId,
-      user_id: userId,
+      userId: userId,
       status: 'Active',
-      order_details: [
+      orderDetails: [
         {
           id: orderId,
-          product_id: productId,
+          productId: productId,
           quantity: 2,
         },
       ],
@@ -68,12 +68,12 @@ describe('Should test Orders', () => {
     });
     await orderStore.create({
       id: orderId,
-      user_id: userId,
+      userId: userId,
       status: 'Active',
-      order_details: [
+      orderDetails: [
         {
           id: orderId,
-          product_id: productId,
+          productId: productId,
           quantity: 2,
         },
       ],
@@ -100,12 +100,12 @@ describe('Should test Orders', () => {
     });
     await orderStore.create({
       id: orderId,
-      user_id: userId,
+      userId: userId,
       status: 'Active',
-      order_details: [
+      orderDetails: [
         {
           id: orderId,
-          product_id: productId,
+          productId: productId,
           quantity: 2,
         },
       ],

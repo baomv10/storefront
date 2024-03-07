@@ -34,11 +34,11 @@ describe('Test Orders api responses', () => {
   describe('Should create method', () => {
     it('it should create order successfully', async () => {
       const payload = {
-        user_id: user.id,
+        userId: user.id,
         status: 'Active',
-        order_details: [
+        orderDetails: [
           {
-            product_id: product.id,
+            productId: product.id,
             quantity: 1,
           },
         ],
@@ -60,11 +60,11 @@ describe('Test Orders api responses', () => {
   describe('Should get Order By User method', () => {
     beforeAll(async () => {
       const payload = {
-        user_id: user.id,
+        userId: user.id,
         status: 'Active',
-        order_details: [
+        orderDetails: [
           {
-            product_id: product.id,
+            productId: product.id,
             quantity: 1,
           },
         ],
@@ -92,11 +92,11 @@ describe('Test Orders api responses', () => {
   describe('Should complete Order By User method', () => {
     beforeAll(async () => {
       const payload = {
-        user_id: user.id,
+        userId: user.id,
         status: 'Active',
-        order_details: [
+        orderDetails: [
           {
-            product_id: product.id,
+            productId: product.id,
             quantity: 1,
           },
         ],

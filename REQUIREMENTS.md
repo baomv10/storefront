@@ -40,3 +40,37 @@ These are the notes from a meeting with the frontend developer that describe wha
 - user_id
 - status of order (active or complete)
 
+## Database schema
+#### users
+| Column | Type | Note
+| --- | --- | --- |
+| id | VARCHAR(50) | PRIMARY KEY |
+| firstName | VARCHAR(100) | |
+| lastName | VARCHAR(100) | |
+| password | VARCHAR(100) | |
+
+
+#### products
+| Column | Type | Note
+| --- | --- | --- |
+| id | VARCHAR(50) | PRIMARY KEY |
+| name | VARCHAR(100) | |
+| price | NUMERIC (10,2) | |
+| category | VARCHAR(100) | |
+
+
+#### orders
+| Column | Type | Note
+| --- | --- | --- |
+| id | VARCHAR(50) | PRIMARY KEY |
+| status | VARCHAR(15) | |
+| userId | VARCHAR (50) | FOREIGN key |
+
+
+#### order_details
+| Column | Type | Note
+| --- | --- | --- |
+| id | VARCHAR(50) | PRIMARY KEY |
+| quantity | INTEGER | |
+| productId | VARCHAR (50) | FOREIGN key |
+| orderId | VARCHAR (50) | FOREIGN KEY |

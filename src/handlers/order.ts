@@ -8,13 +8,13 @@ const store = new OrderStore();
 
 const create = async (req: Request, res: Response) => {
   try {
-    const { id = uuidv4(), user_id, status, order_details } = req.body;
+    const { id = uuidv4(), userId, status, orderDetails } = req.body;
 
     const params = {
       id,
-      user_id,
+      userId,
       status,
-      order_details: order_details.map((item: OrderDetailCommand) => ({
+      orderDetails: orderDetails.map((item: OrderDetailCommand) => ({
         ...item,
         id: uuidv4(),
       })),

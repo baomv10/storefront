@@ -1,20 +1,20 @@
 export type OrderViewModel = {
   id: string;
   status: string;
-  user_id: string;
-  product_id: string;
+  userId: string;
+  productId: string;
   quantity: number;
 };
 
 export type OrderCommand = {
   id: string;
   status: string;
-  user_id: string;
-  order_details: Array<OrderDetailCommand>;
+  userId: string;
+  orderDetails: Array<OrderDetailCommand>;
 };
 
 export type OrderDetailCommand = {
   id: string;
-  product_id: string;
+  productId: string;
   quantity: number;
 };
